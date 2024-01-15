@@ -17,10 +17,12 @@ class AddNotePage extends StatelessWidget {
     Provider.of<NoteProvider>(context, listen: false).fetchNote();
   }
 
-  void addNotes(String title, String desc, BuildContext context) async {
+  void addNotes(
+      String title, String desc, String time, BuildContext context) async {
     context.read<NoteProvider>().addNote(NoteModel(
           title: title,
           desc: desc,
+          time: time,
         ));
   }
 
@@ -65,9 +67,12 @@ class AddNotePage extends StatelessWidget {
                     onTap: () {
                       var title = titleController.text.toString();
                       var desc = descController.text.toString();
+                      var date = DateTime.now();
+                      String time = "${date.day}/${date.month}/${date.year} - ${date.hour}:${date.minute}:${date.second}";
+
                       if (title != '' && desc != '') {
-                        addNotes(title, desc,context);
-                      //  getInitialNotes(context);
+                        addNotes(title, desc, time, context);
+                        //  getInitialNotes(context);
                         Navigator.push(
                             context,
                             MaterialPageRoute(

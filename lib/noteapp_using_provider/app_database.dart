@@ -18,6 +18,7 @@ class AppDatabase {
   static final Note_Id = 'note_id';
   static final Note_Title = 'note_title';
   static final Note_Desc = 'note_desc';
+  static final Note_Time = 'note_time';
 
   Future<Database> getDB() async {
     if (_database != null) {
@@ -30,12 +31,14 @@ class AppDatabase {
   Future<Database> initDB() async {
     Directory documentDirectory = await getApplicationDocumentsDirectory();
 
-    var dbPath = join(documentDirectory.path, 'noteDB.db');
+    var dbPath = join(documentDirectory.path, 'noteProviderDB.db');
     return openDatabase(dbPath, version: 1, onCreate: (db, version) {
       db.execute(
-          'Create table $Note_Table ( $Note_Id integer primary key autoincrement, $Note_Title text, $Note_Desc text)');
+          'Create table $Note_Table ( $Note_Id integer primary key autoincrement, $Note_Title text, $Note_Desc text, $Note_Time text)');
     });
   }
+
+
 
   Future<bool> addNote(NoteModel note) async {
     var db = await getDB();

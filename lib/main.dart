@@ -181,6 +181,7 @@ class _NotesPageState extends State<NotesPage> {
                                           UpdateNote(
                                             mTitle: currData.title,
                                             mDesc: currData.desc,
+                                            mTime: currData.time,
                                             id: currData.note_id,
                                           )));
                               getInitialNotes(context);
@@ -198,6 +199,15 @@ class _NotesPageState extends State<NotesPage> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
+                                  Text(
+                                    index.isFinite
+                                        ? currData.time.length > 20
+                                        ? "${currData.time.substring(
+                                        0, 20)}"
+                                        :currData.time
+                                        : currData.time,
+                                    style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold,backgroundColor: Colors.transparent),
+                                  ),
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment
                                         .spaceBetween,
@@ -237,7 +247,8 @@ class _NotesPageState extends State<NotesPage> {
                                         :currData.desc
                                         : currData.desc,
                                     style: TextStyle(color: Colors.white),
-                                  )
+                                  ),
+
                                 ],
                               ),
                             ),

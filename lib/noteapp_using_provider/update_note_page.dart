@@ -8,8 +8,10 @@ import 'note_provider.dart';
 class UpdateNote extends StatefulWidget {
   String mTitle;
   String mDesc;
+  String mTime;
   int? id;
-  UpdateNote({required this.mTitle, required this.mDesc, this.id});
+
+  UpdateNote({required this.mTitle, required this.mDesc,required this.mTime, this.id});
 
   @override
   State<UpdateNote> createState() => _UpdateNoteState();
@@ -20,6 +22,7 @@ class _UpdateNoteState extends State<UpdateNote> {
   // List<NoteModel> arrNotes = [];
   late String newTitle;
   late String newDesc;
+  late String newTime;
 
   var titleController = TextEditingController();
   var descController = TextEditingController();
@@ -27,10 +30,11 @@ class _UpdateNoteState extends State<UpdateNote> {
   @override
   void initState() {
     super.initState();
-   // myDB = AppDatabase.db;
+    // myDB = AppDatabase.db;
     this.newTitle = widget.mTitle.toString();
     this.newDesc = widget.mDesc.toString();
-   // getNotes();
+    this.newTime = widget.mTime.toString();
+    // getNotes();
     //addNotes(titleController.text, descController.text);
   }
 
@@ -38,14 +42,15 @@ class _UpdateNoteState extends State<UpdateNote> {
     Provider.of<NoteProvider>(context, listen: false).fetchNote();
   }
 
-  void updateNote(String title, String desc, BuildContext context){
-    Provider.of<NoteProvider>(context,listen: false).updateNote(NoteModel(note_id: widget.id,title: title, desc: desc));
+  void updateNote(
+      String title, String desc, String time, BuildContext context) {
+    Provider.of<NoteProvider>(context, listen: false).updateNote(
+        NoteModel(note_id: widget.id, title: title, desc: desc, time: time));
   }
 
-  void deleteNote(int id,BuildContext context){
-    Provider.of<NoteProvider>(context,listen: false).deleteNote(id);
+  void deleteNote(int id, BuildContext context) {
+    Provider.of<NoteProvider>(context, listen: false).deleteNote(id);
   }
-
 
   /*void getNotes() async {
     arrNotes = await myDB.fetchAllNotes();
@@ -96,12 +101,16 @@ class _UpdateNoteState extends State<UpdateNote> {
                     ),
                     InkWell(
                       onTap: () async {
+                       // var time = DateTime.now().toString();
+                        var date = DateTime.now();
+                        String time = "${date.day}/${date.month}/${date.year} - ${date.hour}:${date.minute}:${date.second}";
+
                         if (newTitle != '' && newDesc != '') {
-                         /* await myDB.updateNote(NoteModel(
+                          /* await myDB.updateNote(NoteModel(
                               note_id: widget.id,
                               title: newTitle,
                               desc: newDesc));*/
-                          updateNote(newTitle,newDesc,context);
+                          updateNote(newTitle, newDesc, time, context);
 
                           Navigator.push(
                               context,
@@ -121,7 +130,8 @@ class _UpdateNoteState extends State<UpdateNote> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              Icon(Icons.save,color: Colors.green.shade500,size: 26),
+                              Icon(Icons.save,
+                                  color: Colors.green.shade500, size: 26),
                               Text(
                                 'Update',
                                 style: TextStyle(
@@ -144,7 +154,7 @@ class _UpdateNoteState extends State<UpdateNote> {
                             deleteNote(widget.id!, context);
                             getInitialNotes(context);
 
-                          //  await myDB.deleteNote(widget.id!);
+                            //  await myDB.deleteNote(widget.id!);
                             Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
@@ -160,6 +170,12 @@ class _UpdateNoteState extends State<UpdateNote> {
                   ],
                 ),
               ),
+              SizedBox(
+                height: 24,
+              ),
+              Align(
+                   alignment: Alignment.centerRight,
+                  child: Text(newTime,style: TextStyle(color: Colors.white,fontSize: 18),)),
               SizedBox(
                 height: 24,
               ),
